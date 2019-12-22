@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Меню ресторана</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Меню ресторана</h1>
+        <form method="POST" action="{% url 'order' %}">
+            {% csrf_token %}
+            <div class="row">
+                {% for category in object_list %}
+                    <div class="col-md-4">
+                        <h2>{{category.name}}</h2>
+                        {% for dish in category.dishes.all %}
+                            <h5><p><input type="checkbox" name="dishes" value={{dish.id}}>{{dish}}</p></h5>
+                            <p>
+                                {% if dish.image %}
+                                    <img width="150" height="150" src="{{dish.image.url}}">
+                                {% endif %}
+                            </p>
+                            <p>Калорийность: {{dish.calorie_content}} ккал</p>
+                            <p>Цена: {{dish.price}} руб.</p>
+                            {% if dish.allergens.all %}
+                                <p>
+                                    Аллергены: {% for allergen in dish.allergens.all %}{{allergen}}{% endfor %}
+                                </p>
+                            {% else %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <p><input type="submit" value="Оформить заказ"></p>
+        </form>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

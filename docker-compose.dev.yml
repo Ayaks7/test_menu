@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  wait_db:
+    image: willwill/wait-for-it
+    command: db:5432 --timeout=30
+    depends_on:
+      - db
+  app:
+    build: .
+    command: sh entrypoint.sh
+    volumes:
+      - .:/opt/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - wait_db

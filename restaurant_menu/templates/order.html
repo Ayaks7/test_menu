@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Заказ</title>
+</head>
+<body>
+    <h2>Заказ</h2>
+    {% for dish in dishes %}
+        <p><h5>{{dish}}</h5></p>
+        <p>
+            {% if dish.image %}
+                <img width="150" height="150" src="{{dish.image.url}}">
+            {% endif %}
+        </p>
+        <p>Калорийность: {{dish.calorie_content}} ккал</p>
+        <p>Цена: {{dish.price}} руб.</p>
+        {% if dish.allergens.all %}
+            <p>
+                Аллергены: {% for allergen in dish.allergens.all %}{{allergen}}{% endfor %}
+            </p>
+        {% else %}
+        {% endif %}
+    {% endfor %}
+    <h4>Стоимость: {{full_price}} руб.</h4> 
+</body>
+</html>
